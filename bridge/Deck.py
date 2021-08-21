@@ -1,11 +1,10 @@
 '''
-bridge/Deck.py
+bridge/deck.py
 '''
-
 from enum import Enum
 from collections import defaultdict
 
-from random import shuffle
+from random import seed, shuffle
 
 class Suite(Enum):
   Spades = 'Spades'
@@ -48,35 +47,37 @@ class Card(object):
 class CardDeck(object):
   '''52 card deck'''
   def __init__(self):
-    self._deck = [Card(face, suite) for face in FaceValue for suite in Suite]
+    self.create_new_deck()
   
   def shuffle(self):
     shuffle(self._deck)
 
-  def deal_hand(self):
-    assert len(self._deck) >= 13, "Deck is empty"
-    self.shuffle()
-    hand, self._deck = self._deck[:13], self._deck[13:]
+  def create_new_deck(self):
+    self._deck = [
+      Card(face, suite)
+    for face in FaceValue for suite in Suite]
+
+  def deal_hand(self, shuffle=False, remove_from_deck=True):
+    if len(self._deck) < 13:
+      raise RuntimeError(f"Can't deal 13 cards from deck of size: {len(self._deck)}.")
+    if shuffle:
+      self.shuffle()
+
+    hand = self._deck[:13]
+    if remove_from_deck:
+      self._deck = self._deck[13:]
+
     points = self._get_points_from_hand(hand)
     return hand, points
-
-  def return_hand(self, hand):
-    assert self._is_valid_hand(hand), "hand must be of type: List[Card]"
-    self._deck.extend(hand)
-
-  def _is_valid_hand(self, hand):
-    return isinstance(hand, list) and len(hand) == 13 and \
-      all(isinstance(card, Card) for card in hand)
     
   def _get_points_from_hand(self, hand):
     distribution = defaultdict(int)
     high_card_points = 0
-    distribution_points = 0
-
     for card in hand:
       distribution[card.suite] += 1
       high_card_points += card.points
     
+    distribution_points = 0
     for suite in Suite:
       freq = distribution[suite]
       if freq == 2: # doubleton 
@@ -87,3 +88,22 @@ class CardDeck(object):
         distribution_points += 5
 
     return high_card_points + distribution_points
+
+
+if __name__ == '__main__':
+  print('Testing Card Deck...\n')
+
+  seed(33)
+  c = CardDeck()
+  hand, score = c.deal_hand()
+  assert(len(hand) ==  13)
+  assert(len(c._deck) == 39)
+  assert(score == 16)
+
+  hand, score = c.deal_hand(remove_from_deck=False)
+  assert(len(hand) ==  13)
+  assert(len(c._deck) == 39)
+  assert(score == 7)
+
+  print('Tests passed...Exiting')
+
