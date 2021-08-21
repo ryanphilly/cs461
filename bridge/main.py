@@ -23,7 +23,7 @@ def main(args):
     player_hand, player_score = deck.deal_hand(
       shuffle=True, remove_from_deck=True)
     display_player_hand(player_hand, player_score)
-    
+
     outcome_probs = monte_carlo_n_hands(
       args.n, player_score, deck, greedy_policy)
     display_episode_results(outcome_probs, args.n)
@@ -31,17 +31,6 @@ def main(args):
     if not prompt_another_episode():
       break
     deck.create_new_deck()
-
-def prompt_another_episode():
-  response = input('\nAnother Hand? [Y/N]? ').lower()
-  if response in ('y', 'yes'):
-    return True
-  if response in ('n', 'no', 'q'):
-    return False
-
-  print(f'\nUnknown response "{response}"....\n')
-  return prompt_another_episode()
-
 
 if __name__ == '__main__':
   parser = ArgumentParser()
