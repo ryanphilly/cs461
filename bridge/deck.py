@@ -45,7 +45,7 @@ class Card(object):
     return f'{self.face.value} of {self.suite.value}'
 
 class CardDeck(object):
-  '''52 card deck'''
+  '''52 card deck, no bridge game dynamics besides score evaluation'''
   def __init__(self):
     self.create_new_deck()
   
@@ -58,6 +58,15 @@ class CardDeck(object):
     for face in FaceValue for suite in Suite]
 
   def deal_hand(self, shuffle=False, remove_from_deck=True):
+    '''
+    Deal 13 cards from the deck
+    params:
+      shuffle: bool: shuffle before dealing?
+      remove_from_deck: bool: remove the dealt hand from deck
+    returns:
+      hand: List[Card]: 13 card hand
+      score: int: score of dealt hand
+    '''
     if len(self._deck) < 13:
       raise RuntimeError(f"Can't deal 13 cards from deck of size: {len(self._deck)}.")
     if shuffle:
@@ -71,6 +80,7 @@ class CardDeck(object):
     return hand, points
     
   def _get_points_from_hand(self, hand):
+    '''Evaluate a hand and return its score'''
     distribution = defaultdict(int)
     high_card_points = 0
     for card in hand:
