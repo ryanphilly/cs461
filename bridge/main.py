@@ -23,7 +23,7 @@ def main(args):
     player_hand, player_score = deck.deal_hand(
       shuffle=True, remove_from_deck=True)
     display_player_hand(player_hand, player_score)
-
+    # sample outcomes
     outcome_probs = monte_carlo_n_hands(
       args.n, player_score, deck, greedy_policy)
     display_episode_results(outcome_probs, args.n)

@@ -28,16 +28,16 @@ class FaceValue(Enum):
   Two = '2'
 
 face_to_points = defaultdict(int)
-face_to_points['Ace'] = 4
-face_to_points['King'] = 3
-face_to_points['Queen'] = 2
-face_to_points['Jack'] = 1
+face_to_points[FaceValue.Ace] = 4
+face_to_points[FaceValue.King] = 3
+face_to_points[FaceValue.Queen] = 2
+face_to_points[FaceValue.Jack] = 1
 
 class Card(object):
   def __init__(self, face, suite):
     self.face = face
     self.suite = suite
-    self.points = face_to_points[face.value]
+    self.points = face_to_points[face]
   
   def __str__(self):
     return f'{self.face.value} of {self.suite.value}'
@@ -45,7 +45,10 @@ class Card(object):
     return f'{self.face.value} of {self.suite.value}'
 
 class CardDeck(object):
-  '''52 card deck, no bridge game dynamics besides score evaluation'''
+  '''
+  52 card deck. No game dynamics
+  besides score evaluation
+  '''
   def __init__(self):
     self.create_new_deck()
   
@@ -80,7 +83,7 @@ class CardDeck(object):
     return hand, points
     
   def _get_points_from_hand(self, hand):
-    '''Evaluate a hand and return its score'''
+    '''Evaluates a hand and returns the hands's score'''
     distribution = defaultdict(int)
     high_card_points = 0
     for card in hand:
