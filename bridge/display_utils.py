@@ -2,6 +2,8 @@
 bridge/display_utils.py
 Utility functions to display results and prompt the player
 '''
+from __future__ import print_function
+
 def display_episode_results(outcomes, n):
   '''
   Displays the mc episode to match
