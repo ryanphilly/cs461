@@ -177,11 +177,11 @@ class Deck(_DeckConfigObject):
     if remove_from_deck:
       self._deck = self._deck[self._cards_per_deal:]
 
-    score = self._get_hand_score(cards, custom_cards_scoring)
+    score = self._get_cards_score(cards, custom_cards_scoring)
     return cards, score
     
   def _get_cards_score(self, hand, custom_cards_scoring):
-    '''Evaluates a list of cards and returns the hands's score'''
+    '''Evaluates a list of cards and returns their 's score'''
     freq = defaultdict(int)
     card_points = 0
     for card in hand:

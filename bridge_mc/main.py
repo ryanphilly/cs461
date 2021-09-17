@@ -1,6 +1,7 @@
 '''
 Ryan Phillips
 UMKC 461 Assignment 1
+
 bridge_mc/main.py
 '''
 from __future__ import print_function
@@ -26,10 +27,10 @@ def main(args):
   deck = Deck( # create deck w/ bridge config
     cards_per_deal=13,
     face_points= {'Ace': 4, 'King': 3, 'Queen': 2, 'Jack': 1},
-    suite_distribution_points={2: 1, 1: 2, 0: 5},)
+    suite_distribution_points={2: 1, 1: 2, 0: 5})
     
   while True:
-    player_hand, player_score = deck.deal_hand(remove_from_deck=True)
+    player_hand, player_score = deck.deal_hand(shuffle=True, remove_from_deck=True)
     display_player_hand(player_hand, player_score)
     # sample outcomes
     print('Running Simulation......\n')
