@@ -30,6 +30,7 @@ def main(args):
     suite_distribution_points={2: 1, 1: 2, 0: 5})
     
   while True:
+    # deal player hand
     player_hand, player_score = deck.deal_hand(shuffle=True, remove_from_deck=True)
     display_player_hand(player_hand, player_score)
     # sample outcomes

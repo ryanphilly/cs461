@@ -3,9 +3,10 @@ Ryan Phillips
 
 bridge_mc/deck.py
 
-This is really over engineered for the cs 461 assignment
-but its being used as an enviroment for testing rl algorithms
+This is really over engineered for the assignment
+but im using it for testing rl algorithms
 from Barto and Suttons book https://web.stanford.edu/class/psych209/Readings/SuttonBartoIPRLBook2ndEd.pdf
+so I needed it to be versatile.
 '''
 from collections import defaultdict
 from random import shuffle
@@ -190,11 +191,12 @@ class Deck(_DeckConfigObject):
       freq[(card.face, 'face')] += 1
     
     distribution_points = 0
-    for k, v in freq.items():
-      if k[1] == 'suite':
-        distribution_points += self._suite_distribution_points[v]
-      else:
-        distribution_points += self._face_distribution_points[v]
+    for suite in self._suites:
+      suite_freq = freq[(suite, 'suite')]
+      distribution_points += self._suite_distribution_points[suite_freq]
+    for face in self._faces:
+      face_freq = freq[(face, 'face')]
+      distribution_points += self._face_distribution_points[face_freq]
 
     score = card_points + distribution_points
 

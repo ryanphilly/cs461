@@ -1,4 +1,6 @@
 '''
+Ryan Phillips
+
 bridge_mc/sampling.py
 '''
 from collections import defaultdict
