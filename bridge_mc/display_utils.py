@@ -1,5 +1,5 @@
 '''
-bridge/display_utils.py
+bridge_mc/display_utils.py
 Utility functions to display results and prompt the player
 '''
 from __future__ import print_function
@@ -14,17 +14,16 @@ def display_episode_results(outcomes, n):
   game_prob = outcomes['Game']
   small_slam_prob = outcomes['Small Slam']
   grand_slam_prob = outcomes['Grand Slam']
-  print(f'The estimated probability based on {n} simulated hands:')
-  print(f'Pass: {round(pass_prob * 10e1, 2)}%')
-  print(f'Part Score: {round(part_score_prob * 10e1, 2)}%')
-  print(f'Game: {round(game_prob * 10e1, 2)}%')
-  print(f'Small Slam: {round(small_slam_prob * 10e1, 2)}%')
-  print(f'Grand Slam: {round(grand_slam_prob * 10e1, 2)}%')
+  print('The estimated probability based on {} simulated hands:'.format(n))
+  print('Pass: {}%'.format(round(pass_prob * 10e1, 2)))
+  print('Part Score: {}%'.format(round(part_score_prob * 10e1, 2)))
+  print('Game: {}%'.format(round(game_prob * 10e1, 2)))
+  print('Small Slam: {}%'.format(round(small_slam_prob * 10e1, 2)))
+  print('Grand Slam: {}%'.format(round(grand_slam_prob * 10e1, 2)))
 
 def display_player_hand(player_hand, player_score):
-  print(f'Here is your hand:\n{player_hand}')
-  print(f'This hand is worth {player_score} points.')
-  print('Running Simulation......\n')
+  print('Here is your hand:\n{}'.format(player_hand))
+  print('This hand is worth {} points.'.format(player_score))
 
 def prompt_another_episode():
   response = input('\nAnother Hand? [Y/N]? ').lower()
@@ -33,5 +32,5 @@ def prompt_another_episode():
   if response in ('n', 'no', 'q'):
     return False
 
-  print(f'Unknown response "{response}"....')
+  print('Unknown response "{}"....'.format(response))
   return prompt_another_episode()

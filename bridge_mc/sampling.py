@@ -1,9 +1,9 @@
 '''
-bridge/sampling.py
+bridge_mc/sampling.py
 '''
 from collections import defaultdict
 
-def greedy_policy(score):
+def greedy_bridge_policy(score):
   '''
   Outcome Policy
   returns: str:
@@ -24,7 +24,7 @@ def greedy_policy(score):
 
   return 'Grand Slam'
 
-def monte_carlo_n_hands(n, player_score, deck, policy):
+def bridge_monte_carlo_n_hands(n, player_score, deck, policy):
   '''
   Performs one episode of outcome sampling
   params:

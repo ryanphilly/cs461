@@ -1,13 +1,17 @@
 '''
 Ryan Phillips
 UMKC 461 Assignment 1
-bridge/main.py
+bridge_mc/main.py
 '''
-from argparse import ArgumentParser
-from random import seed
+from __future__ import print_function
 
-from deck import CardDeck
-from sampling import greedy_policy, monte_carlo_n_hands
+from argparse import ArgumentParser
+
+from deck import Deck
+from sampling import (
+  greedy_bridge_policy,
+  bridge_monte_carlo_n_hands
+)
 from display_utils import (
   display_episode_results,
   display_player_hand,
@@ -16,16 +20,21 @@ from display_utils import (
 
 def main(args):
   if args.seed is not None:
+    from random import seed
     seed(args.seed)
 
-  deck = CardDeck()
+  deck = Deck( # create deck w/ bridge config
+    cards_per_deal=13,
+    face_points= {'Ace': 4, 'King': 3, 'Queen': 2, 'Jack': 1},
+    suite_distribution_points={2: 1, 1: 2, 0: 5},)
+    
   while True:
-    player_hand, player_score = deck.deal_hand(
-      shuffle=True, remove_from_deck=True)
+    player_hand, player_score = deck.deal_hand(remove_from_deck=True)
     display_player_hand(player_hand, player_score)
     # sample outcomes
-    outcome_probs = monte_carlo_n_hands(
-      args.n, player_score, deck, greedy_policy)
+    print('Running Simulation......\n')
+    outcome_probs = bridge_monte_carlo_n_hands(
+      args.n, player_score, deck, greedy_bridge_policy)
     display_episode_results(outcome_probs, args.n)
 
     if not prompt_another_episode():
