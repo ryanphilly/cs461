@@ -182,7 +182,7 @@ class Deck(_DeckConfigObject):
     return cards, score
     
   def _get_cards_score(self, hand, custom_cards_scoring):
-    '''Evaluates a list of cards and returns their 's score'''
+    '''Evaluates a list of cards and returns their score'''
     freq = defaultdict(int)
     card_points = 0
     for card in hand:
