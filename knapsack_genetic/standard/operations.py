@@ -5,24 +5,39 @@ knapsack_genetic/standard/operations.py
 '''
 from random import sample, randint, random
 
-def generate_init_population(data_idxs, pop_size, num_samples):
+def generate_init_population(data, data_idxs, pop_size, num_samples, max_weight):
   '''
   Generates a population with random selections
 
+  "data" utils and weights
   "data_idxs" range(len(utils and weights))\n
   "pop_size" size of population to generate\n
   "num_samples" how many items should be in each selection
+  "max_weight" knapsack weight limit
 
-  return: population list[set{indexes of selected items}]
+  return:
+    population list[set{indexes of selected items}]\n
+    fitnesses list[float]\n
+    avg_fitness: float\n
+    sum_of_squares: float\n
   '''
-  return [set(sample(data_idxs, num_samples)) for _ in range(pop_size)]
+  population, fitnesses = list(), list()
+  sum_of_sqaures, total_fitness = 0, 0
+  for idx in range(pop_size):
+    selection = set(sample(data_idxs, num_samples))
+    fitness = evaluate_selection(data, selection, max_weight)
+    sum_of_sqaures += fitness**2
+    total_fitness += fitness
+    population.append(selection)
+    fitnesses.append((idx, fitness))
+  return population, fitnesses, total_fitness / pop_size, sum_of_sqaures
 
-def random_bitflip_mutation(item_idx, genes, mutation_rate):
+def random_bitflip_mutation(item_idx, selection, mutation_rate):
   '''
   mutation_rate chance of bitflip for current index
   '''
   if random() <= mutation_rate:
-    genes.remove(item_idx) if item_idx in genes else genes.add(item_idx)
+    selection.remove(item_idx) if item_idx in selection else selection.add(item_idx)
 
 def sp_crossover(data_idxs, mom_genes, dad_genes, mutation_rate):
   '''
@@ -78,15 +93,10 @@ def l2norm(population_fitnesses, sum_of_squares=0):
 
   normalized = list()
   for fitness in population_fitnesses:
-    normalized.append(fitness**2 / sum_of_squares)
+    normalized.append((fitness[0], fitness[1]**2 / sum_of_squares))
   return normalized
 
 
 if __name__ == '__main__':
   from utils import abs_path, read_data
   from time import perf_counter
-
-  data = read_data(abs_path('./data/'))
-  past = perf_counter()
-  pass
-  print(perf_counter() - past)

@@ -25,6 +25,3 @@ def create_dir(path):
 
 def write_logs(log_path, avg_fitnesses):
   pass
-
-
-  
