@@ -3,11 +3,11 @@ class Population(object):
   def __init__(self, chromosomes, fitnesses, avg_fitness=None):
     self._update(chromosomes, fitnesses, avg_fitness)
   def __str__(self):
-    return 'Avg Fitness: {}\nBest Fitness: {}\nNum Items selected in best: {}\n\nBest Selection: {}\n\n'.format(
+    return 'Avg Fitness: {}\nBest Fitness: {}\nNum Items selected in best: {}\n\nBest Selection: {}'.format(
       self.avg_fitness, self.best_fitness, len(self.best_chromosome), self.best_chromosome
     )
   def __repr__(self):
-    return 'Avg Fitness: {}\nBest Fitness: {}\nNum Items selected in best: {}\n\nBest Selection: {}\n\n'.format(
+    return 'Avg Fitness: {}\nBest Fitness: {}\nNum Items selected in best: {}\nBest Selection: {}'.format(
       self.avg_fitness, self.best_fitness, len(self.best_chromosome), self.best_chromosome
     )
 

@@ -6,7 +6,7 @@ knapsack_genetic/standard/operations.py
 from random import (
   sample, randint, random, choices)
 
-from standard.population import Population
+from population import Population
 
 def generate_init_population(data, data_idxs, pop_size, num_samples, max_weight):
   '''
@@ -27,6 +27,7 @@ def generate_init_population(data, data_idxs, pop_size, num_samples, max_weight)
   for _ in range(pop_size):
     chromosome = set(sample(data_idxs, num_samples))
     fitness = evaluate_chromosome(data, chromosome, max_weight)
+
     chromosomes.append(chromosome)
     fitnesses.append(fitness)
 
@@ -44,7 +45,7 @@ def random_bitflip_mutation(item_idx, chromosome, mutation_rate):
   if random() <= mutation_rate:
     chromosome.remove(item_idx) if item_idx in chromosome else chromosome.add(item_idx)
 
-def sp_crossover(data_idxs, mom_chromosome, dad_chromosome, mutation_rate):
+def mutate(data_idxs, mom_chromosome, dad_chromosome, mutation_rate):
   '''
   Performs Single Point Crossover w/ stochastic biitflip mutation
 
@@ -53,7 +54,7 @@ def sp_crossover(data_idxs, mom_chromosome, dad_chromosome, mutation_rate):
   "dad_chromosome" indexes of selected items in parent 2\n
   "mutation_rate" probability of bitflip per item
 
-  return: (son_chromosome, daughter_chromosome) - indexes of offspring
+  return: (son_chromosome, daughter_chromosome)
   '''
   # at least one gene from mom and dad
   divider = randint(1, len(data_idxs)-2)
@@ -83,7 +84,7 @@ def breed_next_generation(data, data_idxs,
                           max_weight,
                           mutation_rate,
                           normal_fitnesses=None,
-                          deallocate_ancestors=True):
+                          deallocate_ancestors=False):
   '''
   Perfroms fitness proportionate selection
   and breeds a new generation of chronosomes
@@ -91,26 +92,30 @@ def breed_next_generation(data, data_idxs,
   if normal_fitnesses is None:
     normal_fitnesses = l2norm(population.fitnesses)
 
-  # still need to cull
+  # still need to cull?
 
   pop_size = len(population.chromosomes)
-  breeding_pool = choices(population.chromosomes, weights=normal_fitnesses, k=pop_size)
+
+  # weighted roulette wheel
+  breeding_pool = choices(
+    population.chromosomes,
+    weights=normal_fitnesses, k=pop_size)
 
   new_chromosomes, new_fitnesses = list(), list()
   sum_of_squares, total_fitness = 0, 0
 
   for idx in range(pop_size // 2):
-    son, daughter = sp_crossover(
+    son, daughter = mutate(
       data_idxs,
       breeding_pool[idx],
       breeding_pool[pop_size-idx-1],
       mutation_rate)
+  
     son_fitness = evaluate_chromosome(data, son, max_weight)
     daughter_fitness = evaluate_chromosome(data, daughter, max_weight)
 
     new_chromosomes.extend([son, daughter])
     new_fitnesses.extend([son_fitness, daughter_fitness])
-
     sum_of_squares += son_fitness**2 + daughter_fitness**2
     total_fitness += son_fitness + daughter_fitness
 

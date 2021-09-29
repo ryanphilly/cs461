@@ -3,8 +3,7 @@ Ryan Phillips
 
 knapsack_genetic/standard/evolution.py
 '''
-from multiprocessing import Process
-from .operations import (
+from operations import (
   generate_init_population,
   breed_next_generation,
   l2norm

@@ -10,14 +10,13 @@ def abs_path(extension):
   return path.join(path.dirname(path.abspath(__file__)), extension)
 
 def read_data(data_path):
-  utility_and_weights = list()
+  data = list()
   for file in glob(path.join(data_path, '*')):
     with open(path.join(data_path, file), 'r') as file:
       for line in file:
-        split = line.split()
-        utility_and_weights.append(
-          (float(split[0]), float(split[1])))
-  return tuple(utility_and_weights)
+        data.append(tuple(float(i) for i in line.split()))
+
+  return tuple(data)
 
 def create_dir(path):
   if not path.isdir(path):
