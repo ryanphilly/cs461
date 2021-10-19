@@ -5,6 +5,28 @@ genetics/utils.py
 from os import path, mkdir
 from glob import glob
 
+def l2norm(fitnesses):
+  '''
+  Normalizes a populations fitness
+  '''
+  sum_of_squares = sum(fitness**2 for fitness in fitnesses)
+  if sum_of_squares == 0: return [1.0] * len(fitnesses)
+  return [fitness**2 / sum_of_squares for fitness in fitnesses]
+
+
+def weight_constraint_fitness_func(data, max_weight):
+  '''
+  Evaluates a single chromosome
+  '''
+  def evaluate(chromosome):
+    fitness, weight = 0, 0
+    for idx in chromosome:
+      fitness += data[idx][0]
+      weight += data[idx][1]
+    return fitness if weight <= max_weight else 1
+
+  return evaluate
+
 def abs_path(extension):
   '''Absoolute file path'''
   return path.join(path.dirname(path.abspath(__file__)), extension)
