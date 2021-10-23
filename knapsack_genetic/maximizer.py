@@ -1,13 +1,13 @@
 '''
 Ryan Phillips
 
-knapsack_genetic/generator.py
+knapsack_genetic/maximizer.py
 '''
 from random import choices, randint, random, sample
 
 from utils import l2norm
 
-class Generator(object):
+class GeneticMaximizer(object):
   def __init__(self, data, fitness_func, init_pop_size, init_selection_size, mutation_rate):
     self.data_idxs = range(len(data))
     self.population = dict()
@@ -30,10 +30,10 @@ class Generator(object):
       self.population['chromosomes'],
       k=len(self.population['chromosomes']),
       weights=self.get_normal_fitness())
-      
-    # single point crossover with random bitflip mutation
+
     new_chromosomes, new_fitnesses, total_fitness = list(), list(), 0
     for idx in range(len(breeding_pool) // 2):
+      # single point crossover with random bitflip mutation
       son, daughter = self._breed(
         breeding_pool[idx],
         breeding_pool[len(breeding_pool)-idx-1],

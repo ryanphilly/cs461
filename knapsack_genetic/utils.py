@@ -14,7 +14,7 @@ def l2norm(fitnesses):
   return [fitness**2 / sum_of_squares for fitness in fitnesses]
 
 
-def weight_constraint_fitness_func(data, max_weight):
+def cs461weight_constraint_fitness_func(data, max_weight):
   '''
   Evaluates a single chromosome
   '''
@@ -28,7 +28,7 @@ def weight_constraint_fitness_func(data, max_weight):
   return evaluate
 
 def abs_path(extension):
-  '''Absoolute file path'''
+  '''Absolute file path'''
   return path.join(path.dirname(path.abspath(__file__)), extension)
 
 def read_data(data_path):

@@ -11,9 +11,9 @@ from utils import (
   abs_path,
   read_data,
   write_logs,
-  weight_constraint_fitness_func)
+  cs461weight_constraint_fitness_func)
 
-from generator import Generator
+from maximizer import GeneticMaximizer
 
 parser = ArgumentParser()
 '''
@@ -24,11 +24,12 @@ parser.add_argument('--max_weight', type=float, default=5e2)
 '''
 genetic algorithm configuration
 '''
-parser.add_argument('--init_population', type=int, default=1000)
+parser.add_argument('--init_population_size', type=int, default=1000)
 parser.add_argument('--init_items_frac', type=float, default=1/20)
 parser.add_argument('--mutation_rate', type=float, default=1e-4)
 parser.add_argument('--improvement_required', type=float, default=1e-1)
 parser.add_argument('--improvement_leniency', type=int, default=10)
+
 '''
 input and log path configuration
 '''
@@ -42,27 +43,49 @@ def evolve(data, args):
   '''
   Runs GA until specified convergence
   '''
-  fitness_func = weight_constraint_fitness_func(data, args.max_weight)
-  generator = Generator(
+  fitness_func = cs461weight_constraint_fitness_func(data, args.max_weight)
+
+  maximizer = GeneticMaximizer( # init population created
     data, fitness_func,
-    args.init_population,
-    int(len(data)*args.init_items_frac),
+    args.init_population_size,
+    int(len(data) * args.init_items_frac),
     args.mutation_rate)
 
   tolerated, generation_avgs = 0, list()
   while tolerated < args.improvement_leniency:
-    previous_avg_fitness = generator.population['avg_fitness']
+    previous_avg_fitness = maximizer.population['avg_fitness']
     generation_avgs.append(previous_avg_fitness)
-    generator.step()
-    improvement = generator.population['avg_fitness'] - previous_avg_fitness
+
+    maximizer.step() # next population bred
+
+    improvement = maximizer.population['avg_fitness'] - previous_avg_fitness
+
     if len(generation_avgs) % 100 == 0:
-      print(generator.best_selection['fitness'])
+      print('-' * 50)
+      print('Generation: ', len(generation_avgs))
+      print('Avg fitness: ', maximizer.population['avg_fitness'])
+      print('-' * 25)
+      print('Overall Best Fitness: ', maximizer.best_selection['fitness'])
+      print('Overall Best chromosome: ', maximizer.best_selection['chromosome'])
+      print('-' * 50)
+
     if improvement < args.improvement_required:
       tolerated += 1 
     else:
       tolerated = 0
 
-  return generator.best_selection
-  
+  return maximizer.best_selection
+
+
+def util_over_weight():
+  fitness_func = weight_constraint_fitness_func(data, args.max_weight)
+  x = []
+  c = 0
+  for u, w in data:
+    x.append((c, u/w))
+    c += 1
+
+  x.sort(key=lambda x: x[1])
+  print(fitness_func([d[0] for d in x[292:]]))
 
 evolve(data, args)
