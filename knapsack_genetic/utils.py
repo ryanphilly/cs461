@@ -46,3 +46,15 @@ def create_dir(path):
 
 def write_logs(log_path, avg_fitnesses):
   pass
+
+
+def util_over_weight(data, args):
+  fitness_func = cs461weight_constraint_fitness_func(data, args.max_weight)
+  x = []
+  c = 0
+  for u, w in data:
+    x.append((c, u/w))
+    c += 1
+
+  x.sort(key=lambda x: x[1])
+  print(fitness_func([d[0] for d in x[292:]]))

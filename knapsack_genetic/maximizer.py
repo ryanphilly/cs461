@@ -8,6 +8,13 @@ from random import choices, randint, random, sample
 from utils import l2norm
 
 class GeneticMaximizer(object):
+  '''
+  Standard Genetic Algorithm Maximizer
+  Operations:
+    - fitness proportionate selection (using l2 normalization)
+    - single point crossover
+    - stohcastic bitflip mutation
+  '''
   def __init__(self, data, fitness_func, init_pop_size, init_selection_size, mutation_rate):
     self.data_idxs = range(len(data))
     self.population = dict()
@@ -119,4 +126,3 @@ class GeneticMaximizer(object):
         'chromosome': self.population['chromosomes'][best_idx],
         'fitness': self.population['fitnesses'][best_idx]
       }
-

@@ -16,10 +16,6 @@ from utils import (
 from maximizer import GeneticMaximizer
 
 parser = ArgumentParser()
-'''
-knapsack configuration:
-'''
-parser.add_argument('--max_weight', type=float, default=5e2)
 
 '''
 genetic algorithm configuration
@@ -27,7 +23,11 @@ genetic algorithm configuration
 parser.add_argument('--init_population_size', type=int, default=1000)
 parser.add_argument('--init_items_frac', type=float, default=1/20)
 parser.add_argument('--mutation_rate', type=float, default=1e-4)
-parser.add_argument('--improvement_required', type=float, default=1e-1)
+
+'''
+convergence specifications
+'''
+parser.add_argument('--improvement_required', type=float, default=1e-2)
 parser.add_argument('--improvement_leniency', type=int, default=10)
 
 '''
@@ -43,7 +43,7 @@ def evolve(data, args):
   '''
   Runs GA until specified convergence
   '''
-  fitness_func = cs461weight_constraint_fitness_func(data, args.max_weight)
+  fitness_func = cs461weight_constraint_fitness_func(data, 5e2)
 
   maximizer = GeneticMaximizer( # init population created
     data, fitness_func,
@@ -75,17 +75,5 @@ def evolve(data, args):
       tolerated = 0
 
   return maximizer.best_selection
-
-
-def util_over_weight():
-  fitness_func = weight_constraint_fitness_func(data, args.max_weight)
-  x = []
-  c = 0
-  for u, w in data:
-    x.append((c, u/w))
-    c += 1
-
-  x.sort(key=lambda x: x[1])
-  print(fitness_func([d[0] for d in x[292:]]))
 
 evolve(data, args)
