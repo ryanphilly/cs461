@@ -1,0 +1,11 @@
+Logs were generated from running the genetic maximizer on the assignment given data.
+
+Config:
+Initial population size: 2000
+Initial item selection fraction: 1/20
+Mutation rate: 0.0001
+Generations: 5000
+
+Overall Best Selection:
+Fitness: 734.8999999999996
+Overall Best chromosome: {2, 3, 5, 6, 8, 11, 13, 16, 28, 29, 34, 36, 38, 42, 44, 55, 59, 62, 65, 77, 78, 84, 88, 90, 95, 98, 100, 105, 113, 115, 118, 126, 129, 132, 134, 146, 148, 161, 165, 166, 167, 168, 170, 175, 178, 184, 189, 190, 192, 201, 205, 211, 216, 217, 221, 225, 228, 229, 230, 236, 237, 242, 247, 251, 255, 256, 257, 258, 259, 262, 263, 264, 269, 272, 273, 276, 282, 291, 298, 299, 303, 308, 319, 327, 331, 333, 334, 338, 342, 346, 349, 350, 353, 354, 366, 374, 377, 381, 383, 386, 391, 392, 395, 399}

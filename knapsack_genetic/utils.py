@@ -40,12 +40,34 @@ def read_data(data_path):
 
   return tuple(data)
 
-def create_dir(path):
-  if not path.isdir(path):
-    mkdir(path)
+def create_dir(abs_path):
+  if not path.isdir(abs_path):
+    mkdir(abs_path)
 
-def write_logs(log_path, avg_fitnesses):
-  pass
+def logger(log_path):
+  create_dir(log_path)
+  avg_file = open(path.join(log_path, 'avg_fitness.txt'), 'w+')
+  gen_100_file = open(path.join(log_path, 'every_100_gens.txt'), 'w+')
+
+  def close_all():
+    avg_file.close()
+    gen_100_file.close()
+
+  def log_avg(avg):
+    avg_file.write(f'{avg}\n')
+
+  def log_100_gens(maximizer, generation_num):
+    gen_100_file.write(f'Generation: {generation_num}\n')
+    gen_100_file.write(f'Current Population Avg fitness: {maximizer.population["avg_fitness"]}\n')
+    gen_100_file.write(f'Overall Best Fitness: {maximizer.best_selection["fitness"]}\n')
+    gen_100_file.write(f'Overall Best chromosome: {maximizer.best_selection["chromosome"]}\n\n')
+
+  def save_population(chromosomes):
+    with open(path.join(log_path, 'saved_population.txt'), 'w+') as f:
+      f.write(str(chromosomes))
+  
+  return log_avg, log_100_gens, save_population, close_all
+
 
 
 def util_over_weight(data, args):
