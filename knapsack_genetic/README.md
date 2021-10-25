@@ -4,7 +4,7 @@
 ## Repository Structure
 ### CS 461 Project White Paper/Writeup
 #### /writeup/
-### CS 461 output genrated from running on given assignment data and exact assignment config with inital population of 1000
+### CS 461 output genrated from running on given assignment data and exact assignment config with inital population of 2000
 #### /logs/cs461/
 ### Logs/Output generated when running the GA (overwritten on each run)
 #### /logs/
