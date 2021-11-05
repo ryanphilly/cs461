@@ -24,23 +24,26 @@ def read_and_prepare_data(file_name='./data/StudentsPerformance.csv'):
 
 def train():
   features, scores = read_and_prepare_data()
-  model = NonLinearRegressor(feature_dims=[5, 64, 128])
+  model = NonLinearRegressor(feature_dims=[5, 128])
   optimizer = torch.optim.Adam(model.parameters())
   criterion = torch.nn.MSELoss()
   model.train()
-  for _ in range(10000):
-    total_loss = 0
-    for batch in range(0, 1000, 128):
+
+  for epoch in range(100000):
+    for batch in range(64, 1000, 64):
       model.zero_grad()
-      preds = model(features[batch:batch+128])
-      loss = criterion(preds, scores[batch: batch+128])
-      total_loss += loss.item()
+      preds = model(features[batch:batch+64])
+      loss = criterion(preds, scores[batch: batch+64])
       loss.backward()
       optimizer.step()
-    
-    model.eval()
-    print(total_loss / (1000 / 128))
-    print(model(features[0:5]), scores[0:5])
-    model.train()
+
+    if epoch % 100 == 0:
+      model.eval()
+      with torch.no_grad():
+        v_preds = model(features[0:64])
+        accuracy = torch.mean(
+          torch.abs(v_preds - scores[0:64]), dim=0)
+        print(accuracy)
+      model.train()
 
 train()
