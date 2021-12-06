@@ -17,12 +17,12 @@ def dense_block(out_channels, activation='relu', batch_norm=True, drop_out=True)
   block = Sequential()
 
   if drop_out:
-    block.add(Dropout(0.2)) # 20% chance for each neruon to be dropped
+    block.add(Dropout(0.62)) # 62% chance for each neruon to be dropped
 
   block.add(Dense( # gaussian weights, mean=1, std=0.2, no bias, (Y = W.X)
     out_channels,
     activation=activation,
-    use_bias=True,
+    use_bias=False,
     kernel_initializer=tf.random_normal_initializer(0.0, 0.2)))
 
   if batch_norm:
@@ -43,7 +43,7 @@ class ScoreRegressor(Model):
         self.mlps.add(dense_block(width))
 
     self.preds = dense_block(
-      out_channels, activation=None, batch_norm=False, drop_out=False)
+      out_channels, activation=None, batch_norm=False, drop_out=True)
 
   def call(self, x):
     return self.preds(self.mlps(x))
